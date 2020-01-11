@@ -58,6 +58,24 @@ public class Constants {
 
     }
 
+    public class ShooterConstants {
+        public static final int upperMotor = 8;
+        public static final int lowerMotor = 5;
+
+        /* Closed Loop Constants */
+        public static final double kS = 0; // Minimum voltage required to overcome static friction (V)
+        public static final double kV = 0; // Speed per volt (volt seconds per rotation)
+        public static final double kA = 0; // Acceleration per volt (volt seconds squared per rotation)
+    }
+
+    public class HatchConstants {
+        public static final int kEjectForward = 3; // Number between 0 and 7
+        public static final int kEjectReverse = 1; // Number between 0 and 7
+
+        public static final int kRetainerForward = 4; // Number between 0 and 7
+        public static final int kRetainerReverse = 7; // Number between 0 and 7
+    }
+
     /* Misc Settings */
     public static class ComponentConstants {
 
