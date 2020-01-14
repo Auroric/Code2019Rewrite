@@ -25,6 +25,8 @@ import frc.robot.subsystems.Drivetrain;
  * project.
  */
 public class Robot extends TimedRobot {
+  RobotContainer robot;
+  
   //private static final String kDefaultAuto = "Default";
   //private static final String kCustomAuto = "My Auto";
   //private String m_autoSelected;
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    robot = new RobotContainer();
     //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     //m_chooser.addOption("My Auto", kCustomAuto);
     //SmartDashboard.putData("Auto choices", m_chooser);

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -59,9 +60,9 @@ public class RobotContainer {
     /* Binding OI input to Commands */
     private void bindOI() {
         if(shooter != null) {
-            trigger.whenPressed( ()-> Shooter.setOpenLoop(operator.getY(), -operator.getY())).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
-            operator_2.whenPressed( ()-> Shooter.setOpenLoop(-0.3, 0.3)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
-            operator_3.whenPressed( ()-> Shooter.setOpenLoop(0.65, -0.39)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
+            trigger.whileHeld( new RunCommand(()-> Shooter.setOpenLoop(-operator.getY(), operator.getY()))).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
+            operator_2.whenPressed( ()-> Shooter.setOpenLoop(0.65, -0.39)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
+            operator_3.whenPressed( ()-> Shooter.setOpenLoop(-0.3, 0.3)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
         }
 
         if(hatcheffector != null) {

@@ -15,7 +15,7 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class AutonomousContainer {
-    private static TrajectoryConfig config = new TrajectoryConfig(DrivetrainConstants.kTopSpeedMPS, 20) // These numbers literally do not matter
+    private static TrajectoryConfig config = new TrajectoryConfig(DrivetrainConstants.kTopSpeedMPS, 5) // These numbers literally do not matter
             .setKinematics(Drivetrain.kinematics)
             .addConstraint(new DifferentialDriveVoltageConstraint(Drivetrain.feedforward, Drivetrain.kinematics, 10));
 
