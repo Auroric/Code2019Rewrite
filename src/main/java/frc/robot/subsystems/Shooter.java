@@ -42,7 +42,7 @@ public class Shooter implements Subsystem {
             motor.configVoltageCompSaturation(12, 10);
             motor.enableVoltageCompensation(true);
             motor.configClosedloopRamp(0.05, 0);
-            motor.setNeutralMode(NeutralMode.Coast);
+            motor.setNeutralMode(NeutralMode.Brake);
         });
 
         motorLow.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);

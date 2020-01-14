@@ -62,7 +62,7 @@ public class RobotContainer {
         if(shooter != null) {
             trigger.whileHeld( new RunCommand(()-> Shooter.setOpenLoop(-operator.getY(), operator.getY()))).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
             operator_2.whenPressed( ()-> Shooter.setOpenLoop(0.65, -0.39)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
-            operator_3.whenPressed( ()-> Shooter.setOpenLoop(-0.3, 0.3)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
+            operator_3.whenPressed( ()-> Shooter.setOpenLoop(-0.4, 0.9)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
         }
 
         if(hatcheffector != null) {
