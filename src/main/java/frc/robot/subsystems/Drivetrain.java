@@ -161,6 +161,11 @@ public class Drivetrain implements Subsystem {
         Arrays.asList(leftMotorA, rightMotorA).forEach(motor -> motor.setSelectedSensorPosition(0));
     }
 
+    public void resetEndcoders(int left, int right) {
+        rightMotorA.setSelectedSensorPosition(right);
+        leftMotorA.setSelectedSensorPosition(left);
+    }
+
     // Returns the current measurement of the left drivetrain encoder
     public static double getLeftEnc() {
         return leftMotorA.getSelectedSensorPosition();

@@ -26,6 +26,7 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
   RobotContainer robot;
+  Command autonomous;
   
   //private static final String kDefaultAuto = "Default";
   //private static final String kCustomAuto = "My Auto";
@@ -44,6 +45,11 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putData("Auto choices", m_chooser);
   }
 
+  @Override
+  public void disabledInit(){
+    if(autonomous != null) autonomous.cancel();
+  }
+
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -55,6 +61,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("dt left enc", Drivetrain.getLeftEnc());
+    SmartDashboard.putNumber("dt right enc", Drivetrain.getRightEnc());
   }
 
   /**
@@ -75,11 +83,13 @@ public class Robot extends TimedRobot {
     //System.out.println("Auto selected: " + m_autoSelected);
 
     // Begins odometry at the beginning of autonomous period
+    RobotContainer.navX.reset();
     RobotContainer.drivetrain.setOdometry(AutonomousContainer.getInstance().getAutonomousTrajectory().sample(0).poseMeters, 
-                                          Rotation2d.fromDegrees(RobotContainer.navX.getAngle()));
+                                          Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()));
+    RobotContainer.drivetrain.resetEncoders();
     CommandScheduler.getInstance().registerSubsystem(RobotContainer.drivetrain);
-    Command autoCommand = AutonomousContainer.getInstance().getAutonomousCommand();
-    autoCommand.schedule();
+    autonomous = AutonomousContainer.getInstance().getAutonomousCommand();
+    autonomous.schedule();
   }
 
   /**
@@ -103,7 +113,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    if(autonomous != null) autonomous.cancel();
   }
 
   /**

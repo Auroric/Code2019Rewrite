@@ -36,9 +36,9 @@ public class Constants {
         public static final double kV = 1.94; // Speed per volt (volt seconds per meter)
         public static final double kA = 0.67; // Acceleration per volt (volt seconds squared per meter)
 
-        public static final double kPVelocity = 0; //6.81
+        public static final double kPVelocity = 6.81;
 
-        public static final double kTopSpeedMPS = 0.1; // 5.411
+        public static final double kTopSpeedMPS = 5.411; 
         public static final double kQuickStopThreshold = 0.2;
         public static final double kQuickStopAlpha = 0.1;
 
