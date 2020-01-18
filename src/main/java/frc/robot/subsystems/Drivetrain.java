@@ -13,9 +13,11 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -81,6 +83,8 @@ public class Drivetrain implements Subsystem {
         leftMotorA.setSensorPhase(false);
         rightMotorA.setSensorPhase(false);
 
+        register();
+
     }  
 
     /**
@@ -95,10 +99,11 @@ public class Drivetrain implements Subsystem {
         double velocityLeft = DifferentialDrive.TicksPerDecisecondtoMPS(Drivetrain.getLeftEncVelocity());
         double velocityRight = DifferentialDrive.TicksPerDecisecondtoMPS(Drivetrain.getRightEncVelocity());
 
-        odometry.update(Rotation2d.fromDegrees(RobotContainer.navX.getAngle()),
+        odometry.update(Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()),
                         DifferentialDrive.TicksToMeters(Drivetrain.getLeftEnc()), 
                         DifferentialDrive.TicksToMeters(Drivetrain.getRightEnc()));
-        RobotContainer.falcondash.putOdom(odometry.getPoseMeters());   
+        RobotContainer.falcondash.putOdom(meterToFeet(odometry.getPoseMeters()));  
+        //System.out.println(odometry.getPoseMeters().getTranslation().toString()); 
     }
 
     /**
@@ -278,5 +283,10 @@ public class Drivetrain implements Subsystem {
             this.left = left;
             this.right = right;
         }
+    }
+
+    public static Pose2d meterToFeet(Pose2d meter) {
+        Translation2d feetTranslation = meter.getTranslation().div(1/3.28084);
+        return new Pose2d(feetTranslation, meter.getRotation());
     }
 }

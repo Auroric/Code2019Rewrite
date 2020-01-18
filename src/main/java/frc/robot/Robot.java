@@ -40,14 +40,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     robot = new RobotContainer();
-    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    //m_chooser.addOption("My Auto", kCustomAuto);
-    //SmartDashboard.putData("Auto choices", m_chooser);
+    RobotContainer.drivetrain.resetEncoders();
+    RobotContainer.navX.reset();
   }
 
   @Override
   public void disabledInit(){
-    if(autonomous != null) autonomous.cancel();
+
   }
 
   /**
@@ -78,16 +77,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    //m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    //System.out.println("Auto selected: " + m_autoSelected);
 
     // Begins odometry at the beginning of autonomous period
     RobotContainer.navX.reset();
     RobotContainer.drivetrain.setOdometry(AutonomousContainer.getInstance().getAutonomousTrajectory().sample(0).poseMeters, 
                                           Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()));
     RobotContainer.drivetrain.resetEncoders();
-    CommandScheduler.getInstance().registerSubsystem(RobotContainer.drivetrain);
     autonomous = AutonomousContainer.getInstance().getAutonomousCommand();
     autonomous.schedule();
   }
@@ -113,7 +108,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if(autonomous != null) autonomous.cancel();
   }
 
   /**

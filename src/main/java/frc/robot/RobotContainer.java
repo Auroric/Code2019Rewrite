@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriverConstants;
+import frc.robot.autonomous.AutonomousContainer;
 import frc.robot.autonomous.LiveDashboard;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Drive.State;
@@ -34,6 +37,7 @@ public class RobotContainer {
     public static XboxController driver = new XboxController(0);
     public static JoystickButton driver_B = new JoystickButton(driver, 2);
     public static JoystickButton driver_Y = new JoystickButton(driver, 4);
+    public static JoystickButton driver_A = new JoystickButton(driver, 1);
 
     public static Joystick operator = new Joystick(1);
     public static JoystickButton trigger = new JoystickButton(operator, 1);
@@ -59,6 +63,7 @@ public class RobotContainer {
 
     /* Binding OI input to Commands */
     private void bindOI() {
+
         if(shooter != null) {
             trigger.whileHeld( new RunCommand(()-> Shooter.setOpenLoop(-operator.getY(), operator.getY()))).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
             operator_2.whenPressed( ()-> Shooter.setOpenLoop(0.65, -0.39)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
@@ -82,6 +87,11 @@ public class RobotContainer {
             ));
 
             driver_Y.whenPressed(()-> hatcheffector.alternate_retainer());
+            driver_A.whenPressed(()-> {
+                navX.reset();
+                Drivetrain.odometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(navX.getAngle()));
+                drivetrain.resetEncoders();
+            });
         }
     }
 
