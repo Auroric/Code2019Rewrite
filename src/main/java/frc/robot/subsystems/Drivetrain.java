@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
@@ -43,6 +45,9 @@ public class Drivetrain implements Subsystem {
     public static SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DrivetrainConstants.kS, DrivetrainConstants.kV, DrivetrainConstants.kA);
     public static DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.DrivetrainConstants.trackwidth);
     public static DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(RobotContainer.navX.getAngle()));
+
+    public static PIDController leftPIDController = new PIDController(DrivetrainConstants.kPVelocity, 0, 0);
+    public static PIDController rightPIDController = new PIDController(DrivetrainConstants.kPVelocity, 0, 0);
 
     private static double lastLeft = 0;
     private static double lastRight = 0;
@@ -99,11 +104,19 @@ public class Drivetrain implements Subsystem {
         double velocityLeft = DifferentialDrive.TicksPerDecisecondtoMPS(Drivetrain.getLeftEncVelocity());
         double velocityRight = DifferentialDrive.TicksPerDecisecondtoMPS(Drivetrain.getRightEncVelocity());
 
+        SmartDashboard.putNumber("Left Actual Velocity", velocityLeft);
+        SmartDashboard.putNumber("Right Actual Velocity", velocityRight);
+
+        SmartDashboard.putNumber("Left Error Velocity", leftPIDController.getVelocityError());
+        SmartDashboard.putNumber("Right Error Velocity", rightPIDController.getVelocityError());
+
+        SmartDashboard.putNumber("Left Target Velocity", leftPIDController.getSetpoint());
+        SmartDashboard.putNumber("Right Target Velocity", rightPIDController.getSetpoint());
+        
         odometry.update(Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()),
                         DifferentialDrive.TicksToMeters(Drivetrain.getLeftEnc()), 
                         DifferentialDrive.TicksToMeters(Drivetrain.getRightEnc()));
         RobotContainer.falcondash.putOdom(meterToFeet(odometry.getPoseMeters()));  
-        //System.out.println(odometry.getPoseMeters().getTranslation().toString()); 
     }
 
     /**
@@ -126,7 +139,25 @@ public class Drivetrain implements Subsystem {
     public static void setOpenLoop(Double left, Double right) {
         leftMotorA.set(ControlMode.PercentOutput, left);
         rightMotorA.set(ControlMode.PercentOutput, right);
+
+        SmartDashboard.putNumber("l volt", left);
+        SmartDashboard.putNumber("r volt", right);
     }
+
+    /**
+     * Sets drivetrain speeds in open loop (% of max voltage)
+     * 
+     * @param left   Percent output of motors on left side of drivetrain
+     * @param right  Percent output of motors on right side of drivetrain
+     */
+    public static void setOpenLoop(Double left, Double right, boolean auto) {
+        leftMotorA.set(ControlMode.PercentOutput, left/12.0);
+        rightMotorA.set(ControlMode.PercentOutput, right/12.0);
+
+        SmartDashboard.putNumber("l volt", left/12.0);
+        SmartDashboard.putNumber("r volt", right/12.0);
+    }
+
 
     /**
      * Sets drivetrain speeds in closed loop (m/s)
@@ -166,9 +197,13 @@ public class Drivetrain implements Subsystem {
         Arrays.asList(leftMotorA, rightMotorA).forEach(motor -> motor.setSelectedSensorPosition(0));
     }
 
-    public void resetEndcoders(int left, int right) {
+    public void resetEncoders(int left, int right) {
         rightMotorA.setSelectedSensorPosition(right);
         leftMotorA.setSelectedSensorPosition(left);
+    }
+
+    public static DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(DifferentialDrive.TicksPerDecisecondtoMPS(getLeftEncVelocity()), DifferentialDrive.TicksPerDecisecondtoMPS(getRightEncVelocity()));
     }
 
     // Returns the current measurement of the left drivetrain encoder

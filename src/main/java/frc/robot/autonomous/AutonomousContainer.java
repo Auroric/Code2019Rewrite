@@ -15,9 +15,9 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class AutonomousContainer {
-    private static TrajectoryConfig config = new TrajectoryConfig(3, 5) // These numbers literally do not matter
+    private static TrajectoryConfig config = new TrajectoryConfig(2, 4) // These numbers literally do not matter
             .setKinematics(Drivetrain.kinematics)
-            .addConstraint(new DifferentialDriveVoltageConstraint(Drivetrain.feedforward, Drivetrain.kinematics, 9));
+            .addConstraint(new DifferentialDriveVoltageConstraint(Drivetrain.feedforward, Drivetrain.kinematics, 10));
 
     Trajectory exampleTrajectory;
 
@@ -28,7 +28,7 @@ public class AutonomousContainer {
         new Pose2d(0, 5, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
         List.of(
-            new Translation2d(1, 5)
+            new Translation2d(1.5, 5)
         ),
         // End 3 meters straight ahead of where we started, facing forward
         new Pose2d(2, 5, new Rotation2d(0)),
@@ -48,6 +48,6 @@ public class AutonomousContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new TrajectoryTracker(exampleTrajectory).andThen( ()-> Drivetrain.setOpenLoop(0.0, 0.0), RobotContainer.drivetrain);
+        return new TrajectoryTracker(exampleTrajectory, true).andThen( ()-> Drivetrain.setOpenLoop(0.0, 0.0), RobotContainer.drivetrain);
     }
 }

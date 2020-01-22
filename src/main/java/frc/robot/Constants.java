@@ -32,17 +32,17 @@ public class Constants {
     public class DrivetrainConstants {
 
         /* Auto Constants */
-        public static final double kS = 1.32; // Minimum voltage required to overcome static friction (V)
-        public static final double kV = 1.94; // Speed per volt (volt seconds per meter)
-        public static final double kA = 0.67; // Acceleration per volt (volt seconds squared per meter)
+        public static final double kS = 1.74; // Minimum voltage required to overcome static friction (V)
+        public static final double kV = 1.73; // Speed per volt (volt seconds per meter)
+        public static final double kA = 0.301; // Acceleration per volt (volt seconds squared per meter)
 
-        public static final double kPVelocity = 6.81;
+        public static final double kPVelocity = 4; //0.0592
 
         public static final double kTopSpeedMPS = 5.411; 
         public static final double kQuickStopThreshold = 0.2;
         public static final double kQuickStopAlpha = 0.1;
 
-        public static final double trackwidth = 0.5207; // Wheelbase in meters
+        public static final double trackwidth = 0.76; // Real: 0.5207
         public static final double ticksPerRotation = 1024;
         public static final double wheelRadius = 0.1016; // Wheel radius in meters
 

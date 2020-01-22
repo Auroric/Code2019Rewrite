@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.RobotContainer;
@@ -23,22 +24,33 @@ public class TrajectoryTracker extends RamseteCommand {
               kinematics, 
               (left, right) -> Drivetrain.setClosedLoop(left, right));
         this.trajectory = trajectory;
-        
+    }
+
+    public TrajectoryTracker(Trajectory trajectory, boolean useWPILIB) {
+        super(trajectory, 
+              () -> Drivetrain.odometry.getPoseMeters(),
+              follower,
+              Drivetrain.feedforward,
+              kinematics,
+              () -> Drivetrain.getWheelSpeeds(),
+              Drivetrain.leftPIDController,
+              Drivetrain.rightPIDController,
+              (left, right) -> Drivetrain.setOpenLoop(left, right, true),
+              RobotContainer.drivetrain);
+        this.trajectory = trajectory;
     }
 
     @Override 
     public void initialize() {
         super.initialize();
         startTime = Timer.getFPGATimestamp();
-        System.out.println("lol this is auto starting");
+
     }
 
     @Override
     public void execute() {
         super.execute();
         double currentTime = Timer.getFPGATimestamp();
-
-        if(currentTime - startTime > 2) System.out.println("lol this is auto");
 
         Trajectory.State currentState = trajectory.sample(currentTime-startTime);
         Pose2d currentPose = currentState.poseMeters;
