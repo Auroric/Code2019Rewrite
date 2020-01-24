@@ -135,29 +135,21 @@ public class Drivetrain implements Subsystem {
      * 
      * @param left   Percent output of motors on left side of drivetrain
      * @param right  Percent output of motors on right side of drivetrain
+     * @param isAuto Whether this is being run in autonomous
      */
-    public static void setOpenLoop(Double left, Double right) {
-        leftMotorA.set(ControlMode.PercentOutput, left);
-        rightMotorA.set(ControlMode.PercentOutput, right);
+    public static void setOpenLoop(Double left, Double right, boolean isAuto) {
+
+        if(isAuto) {
+            leftMotorA.set(ControlMode.PercentOutput, left/12.0);
+            rightMotorA.set(ControlMode.PercentOutput, right/12.0);
+        } else {
+            leftMotorA.set(ControlMode.PercentOutput, left);
+            rightMotorA.set(ControlMode.PercentOutput, right);
+        }
 
         SmartDashboard.putNumber("l volt", left);
         SmartDashboard.putNumber("r volt", right);
     }
-
-    /**
-     * Sets drivetrain speeds in open loop (% of max voltage)
-     * 
-     * @param left   Percent output of motors on left side of drivetrain
-     * @param right  Percent output of motors on right side of drivetrain
-     */
-    public static void setOpenLoop(Double left, Double right, boolean auto) {
-        leftMotorA.set(ControlMode.PercentOutput, left/12.0);
-        rightMotorA.set(ControlMode.PercentOutput, right/12.0);
-
-        SmartDashboard.putNumber("l volt", left/12.0);
-        SmartDashboard.putNumber("r volt", right/12.0);
-    }
-
 
     /**
      * Sets drivetrain speeds in closed loop (m/s)
@@ -290,19 +282,19 @@ public class Drivetrain implements Subsystem {
         }
 
         public static double FPStoTicksPerDecisecond(double val) {
-            return val * 0.00485104266 * DrivetrainConstants.ticksPerRotation / DrivetrainConstants.wheelRadius;
+            return val * DrivetrainConstants.ticksPerRotation * 12 / (10 * 4 * Math.PI);
         }
 
         public static double MPStoTicksPerDecisecond(double val) {
-            return val * 0.0159154943 * DrivetrainConstants.ticksPerRotation / DrivetrainConstants.wheelRadius;
+            return val * DrivetrainConstants.ticksPerRotation / (10 * Math.PI * DrivetrainConstants.wheelDiameter);
         }
 
         public static double TicksPerDecisecondtoFPS(double val) {
-            return val * 206.141250467 * DrivetrainConstants.wheelRadius / DrivetrainConstants.ticksPerRotation;
+            return val * 10 * 4 * Math.PI / (DrivetrainConstants.ticksPerRotation * 12);
         }
 
         public static double TicksPerDecisecondtoMPS(double val) {
-            return val * 62.8318530718 * DrivetrainConstants.wheelRadius / DrivetrainConstants.ticksPerRotation;
+            return val * 10 * DrivetrainConstants.wheelDiameter * Math.PI / DrivetrainConstants.ticksPerRotation;
         }
 
         public static double TicksToMeters(double val) {

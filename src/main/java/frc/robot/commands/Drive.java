@@ -45,7 +45,7 @@ public class Drive implements Command {
                     right = -turn * DriverConstants.kTurnInPlaceSens;
                 }
 
-                Drivetrain.setOpenLoop(left, right);
+                Drivetrain.setOpenLoop(left, right, false);
                 break;
 
             case CheesyDriveClosedLoop:
@@ -70,7 +70,7 @@ public class Drive implements Command {
                     wheelSpeeds = Drivetrain.DifferentialDrive.curvatureDrive(throttle, turn, true);
                 }
 
-                Drivetrain.setOpenLoop(wheelSpeeds.left, wheelSpeeds.right);
+                Drivetrain.setOpenLoop(wheelSpeeds.left, wheelSpeeds.right, false);
 
         }
 
@@ -87,7 +87,7 @@ public class Drive implements Command {
     @Override
     public void end(boolean interrupted) {
         Drivetrain.clearLastVelocities();
-        Drivetrain.setOpenLoop(0.0, 0.0);
+        Drivetrain.setOpenLoop(0.0, 0.0, false);
     }
 
     public static enum State {

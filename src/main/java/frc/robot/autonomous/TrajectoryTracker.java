@@ -62,7 +62,7 @@ public class TrajectoryTracker extends RamseteCommand {
     public void end(boolean interrupted) {
         super.end(interrupted);
         Drivetrain.clearLastVelocities();
-        Drivetrain.setOpenLoop(0.0, 0.0);
+        Drivetrain.setOpenLoop(0.0, 0.0, false);
         RobotContainer.falcondash.endPath();
     }
     

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
     robot = new RobotContainer();
     RobotContainer.drivetrain.resetEncoders();
     RobotContainer.navX.reset();
+    RobotContainer.compressor.stop();
   }
 
   @Override
@@ -82,6 +84,7 @@ public class Robot extends TimedRobot {
     RobotContainer.navX.reset();
     RobotContainer.drivetrain.setOdometry(AutonomousContainer.getInstance().getAutonomousTrajectory().sample(0).poseMeters, 
                                           Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()));
+    /*(RobotContainer.drivetrain.setOdometry(new Pose2d(0, 4, Rotation2d.fromDegrees(-RobotContainer.navX.getAngle())), Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()));*/
     RobotContainer.drivetrain.resetEncoders();
     autonomous = AutonomousContainer.getInstance().getAutonomousCommand();
     autonomous.schedule();

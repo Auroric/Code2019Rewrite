@@ -3,6 +3,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriverConstants;
+import frc.robot.Constants.ComponentConstants;
 import frc.robot.autonomous.AutonomousContainer;
 import frc.robot.autonomous.LiveDashboard;
 import frc.robot.commands.Drive;
@@ -34,6 +36,8 @@ public class RobotContainer {
     public static Shooter shooter;
     public static HatchEffector hatcheffector;
 
+    public static Compressor compressor;
+
     public static XboxController driver = new XboxController(0);
     public static JoystickButton driver_B = new JoystickButton(driver, 2);
     public static JoystickButton driver_Y = new JoystickButton(driver, 4);
@@ -47,6 +51,8 @@ public class RobotContainer {
     /* Instantiates all robot components */
     public RobotContainer(){
         navX = new AHRS(Port.kMXP);
+
+        compressor = new Compressor(ComponentConstants.kPCM_ID);
 
         drivetrain = Drivetrain.getInstance();
         drivetrain.setDefaultCommand(new Drive(State.CheesyDriveOpenLoop));
