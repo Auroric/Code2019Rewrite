@@ -5,7 +5,7 @@ public class Constants {
     /* Differential Drive Settings */
     public static class DriverConstants {
 
-        public static final double kJoystickDeadband = 0.03; // How much of joystick is "dead" zone [0,1]
+        public static final double kJoystickDeadband = 0.05; // How much of joystick is "dead" zone [0,1]
         public static final double kTriggerDeadband = 0.05; // How much of trigger is "dead" zone [0,1]
 
         public static final double kTurnSens = 1; // Maximum normal turning rate (in percent of max) to allow robot to turn to [0,1]

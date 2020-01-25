@@ -1,13 +1,17 @@
 package frc.robot.autonomous;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -22,20 +26,24 @@ public class AutonomousContainer {
     Trajectory exampleTrajectory;
 
     private AutonomousContainer() {
-        // An example trajectory to follow.  All units in meters.
-        exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 5, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(1, 5.5),
-            new Translation2d(2, 4.5)
-        ),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 5, new Rotation2d(0)),
-        // Pass config
-        config
-    );
+        try {
+            exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/paths/InitiationToTarget.json"));
+        } catch(IOException e) {
+            exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+            // Start at the origin facing the +X direction
+            new Pose2d(0, 5, new Rotation2d(0)),
+            // Pass through these two interior waypoints, making an 's' curve path
+            List.of(
+                new Translation2d(1, 5.5),
+                new Translation2d(2, 4.5)
+            ),
+            // End 3 meters straight ahead of where we started, facing forward
+            new Pose2d(3, 5, new Rotation2d(0)),
+            // Pass config
+            config
+            
+            );
+        }
     }
 
     private static AutonomousContainer instance;
