@@ -86,7 +86,6 @@ public class Drive implements Command {
     // When this command ends, it stops the drivetrain to guarantee safety
     @Override
     public void end(boolean interrupted) {
-        Drivetrain.clearLastVelocities();
         Drivetrain.setOpenLoop(0.0, 0.0, false);
     }
 

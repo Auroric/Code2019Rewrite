@@ -49,9 +49,6 @@ public class Drivetrain implements Subsystem {
     public static PIDController leftPIDController = new PIDController(DrivetrainConstants.kPVelocity, 0, 0);
     public static PIDController rightPIDController = new PIDController(DrivetrainConstants.kPVelocity, 0, 0);
 
-    private static double lastLeft = 0;
-    private static double lastRight = 0;
-
     private Drivetrain() {
 
         /* Setting follower and master speed controllers */
@@ -158,13 +155,14 @@ public class Drivetrain implements Subsystem {
      * @param right  Velocity to set right side of drivetrain to
      */
     public static void setClosedLoop(Double left, Double right) {
-        // Deriving acceleration from velocities, assuming loop time of 0.02 seconds (50ms)
-        double accelLeft = (left - lastLeft) / 0.02;
-        double accelRight = (right - lastRight) / 0.02;
 
-        // Setting previous velocities for next loop's acceleration calculation
-        lastLeft = left;
-        lastRight = right;
+        // Get previous velocity values
+        double lastVelocityLeft = DifferentialDrive.TicksPerDecisecondtoMPS(leftMotorA.getClosedLoopTarget());
+        double lastVelocityRight = DifferentialDrive.TicksPerDecisecondtoMPS(rightMotorA.getClosedLoopTarget());
+
+        // Deriving acceleration from velocities, assuming loop time of 0.02 seconds (50ms)
+        double accelLeft = (left - lastVelocityLeft) / 0.02;
+        double accelRight = (right - lastVelocityRight) / 0.02;
 
         // Calculating feedforwards from velocity and acceleration 
         double feedforwardLeft = feedforward.calculate(left, accelLeft) / 12;
@@ -176,12 +174,6 @@ public class Drivetrain implements Subsystem {
 
         leftMotorA.set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, feedforwardLeft);
         rightMotorA.set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, feedforwardRight);
-    }
-
-    // Clearing previous velocity values, transition from autonomous to teleop
-    public static void clearLastVelocities(){
-        lastLeft = 0;
-        lastRight = 0;
     }
 
     // Zeroes encoders 
