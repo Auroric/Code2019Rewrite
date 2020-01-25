@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
     robot = new RobotContainer();
     RobotContainer.drivetrain.resetEncoders();
     RobotContainer.navX.reset();
-    RobotContainer.compressor.stop();
+    RobotContainer.compressor.setClosedLoopControl(true);
   }
 
   @Override
@@ -84,7 +84,6 @@ public class Robot extends TimedRobot {
     RobotContainer.navX.reset();
     RobotContainer.drivetrain.setOdometry(AutonomousContainer.getInstance().getAutonomousTrajectory().sample(0).poseMeters, 
                                           Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()));
-    /*(RobotContainer.drivetrain.setOdometry(new Pose2d(0, 4, Rotation2d.fromDegrees(-RobotContainer.navX.getAngle())), Rotation2d.fromDegrees(-RobotContainer.navX.getAngle()));*/
     RobotContainer.drivetrain.resetEncoders();
     autonomous = AutonomousContainer.getInstance().getAutonomousCommand();
     autonomous.schedule();

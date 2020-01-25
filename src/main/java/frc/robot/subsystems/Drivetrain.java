@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.geometry.Twist2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
@@ -156,7 +157,7 @@ public class Drivetrain implements Subsystem {
      */
     public static void setClosedLoop(Double left, Double right) {
 
-        // Get previous velocity values
+        // Get previous velocity values and convert from Talon native to meters per second
         double lastVelocityLeft = DifferentialDrive.TicksPerDecisecondtoMPS(leftMotorA.getClosedLoopTarget());
         double lastVelocityRight = DifferentialDrive.TicksPerDecisecondtoMPS(rightMotorA.getClosedLoopTarget());
 
@@ -164,11 +165,11 @@ public class Drivetrain implements Subsystem {
         double accelLeft = (left - lastVelocityLeft) / 0.02;
         double accelRight = (right - lastVelocityRight) / 0.02;
 
-        // Calculating feedforwards from velocity and acceleration 
-        double feedforwardLeft = feedforward.calculate(left, accelLeft) / 12;
-        double feedforwardRight = feedforward.calculate(right, accelRight) /12;
+        // Calculating feedforwards from velocity and acceleration, dividing by 12 to get percent of max voltage
+        double feedforwardLeft = feedforward.calculate(left, accelLeft) / 12.0;
+        double feedforwardRight = feedforward.calculate(right, accelRight) /12.0;
 
-        // Converting left and right meters/sec to Talon native units
+        // Converting left and right meters per second to Talon native units
         left = DifferentialDrive.MPStoTicksPerDecisecond(left);
         right = DifferentialDrive.MPStoTicksPerDecisecond(right);
 
@@ -181,11 +182,13 @@ public class Drivetrain implements Subsystem {
         Arrays.asList(leftMotorA, rightMotorA).forEach(motor -> motor.setSelectedSensorPosition(0));
     }
 
+    // Sets encoders to a specific value
     public void resetEncoders(int left, int right) {
         rightMotorA.setSelectedSensorPosition(right);
         leftMotorA.setSelectedSensorPosition(left);
     }
 
+    // Returns a DifferentialDriveWheelSpeeds object containing the left and right wheel velocities in meters per second
     public static DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(DifferentialDrive.TicksPerDecisecondtoMPS(getLeftEncVelocity()), DifferentialDrive.TicksPerDecisecondtoMPS(getRightEncVelocity()));
     }

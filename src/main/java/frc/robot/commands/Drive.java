@@ -2,12 +2,19 @@ package frc.robot.commands;
 
 import java.util.Set;
 
+import edu.wpi.first.wpilibj.geometry.Twist2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriverConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Drivetrain.DifferentialDrive;
 import frc.robot.subsystems.Drivetrain.WheelState;
 
 public class Drive implements Command {
@@ -64,13 +71,19 @@ public class Drive implements Command {
 
             case CheesyDriveOpenLoop:
 
-                if (throttle != 0) {
-                    wheelSpeeds = Drivetrain.DifferentialDrive.curvatureDrive(throttle, turn, false);
-                } else {
-                    wheelSpeeds = Drivetrain.DifferentialDrive.curvatureDrive(throttle, turn, true);
-                }
+                SmartDashboard.putNumber("throttle", throttle);
+                SmartDashboard.putNumber("turn", turn);
+                throttle *= Constants.DrivetrainConstants.kTopSpeedMPS;
+                turn *= Constants.DriverConstants.kMaxTurnRateRadians;
+                
+                DifferentialDriveWheelSpeeds speeds = Drivetrain.kinematics.toWheelSpeeds(new ChassisSpeeds(throttle, 0.0, turn));
+                double scaling_factor = Math.max(1, Math.max(speeds.leftMetersPerSecond, speeds.rightMetersPerSecond));
+    
+                SmartDashboard.putNumber("l_effort", speeds.leftMetersPerSecond/Constants.DrivetrainConstants.kTopSpeedMPS);
+                SmartDashboard.putNumber("r_effort", speeds.rightMetersPerSecond/Constants.DrivetrainConstants.kTopSpeedMPS);
 
-                Drivetrain.setOpenLoop(wheelSpeeds.left, wheelSpeeds.right, false);
+                Drivetrain.setOpenLoop(speeds.leftMetersPerSecond/Constants.DrivetrainConstants.kTopSpeedMPS, speeds.rightMetersPerSecond/Constants.DrivetrainConstants.kTopSpeedMPS, false);
+                break;
 
         }
 

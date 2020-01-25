@@ -55,7 +55,7 @@ public class RobotContainer {
         compressor = new Compressor(ComponentConstants.kPCM_ID);
 
         drivetrain = Drivetrain.getInstance();
-        drivetrain.setDefaultCommand(new Drive(State.CheesyDriveOpenLoop));
+        drivetrain.setDefaultCommand(new Drive(State.OpenLoop));
 
         shooter = Shooter.getInstance();
 
