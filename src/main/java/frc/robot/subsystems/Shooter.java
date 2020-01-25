@@ -32,11 +32,10 @@ public class Shooter implements Subsystem {
     private Shooter() {
         Arrays.asList(motorLow, motorHigh).forEach(motor -> {
             if(motor instanceof TalonSRX) {
-                TalonSRX talon = (TalonSRX) motor;
-                talon.configPeakCurrentLimit(45);
-                talon.configPeakCurrentDuration(125);
-                talon.configContinuousCurrentLimit(38);
-                talon.enableCurrentLimit(true);
+                motor.configPeakCurrentLimit(45);
+                motor.configPeakCurrentDuration(125);
+                motor.configContinuousCurrentLimit(38);
+                motor.enableCurrentLimit(true);
             }
 
             motor.configVoltageCompSaturation(12, 10);
@@ -93,5 +92,4 @@ public class Shooter implements Subsystem {
     public void resetEncoders() {
         Arrays.asList(motorHigh, motorLow).forEach(motor -> motor.setSelectedSensorPosition(0));
     }
-
 }

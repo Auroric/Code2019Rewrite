@@ -49,5 +49,4 @@ public class LiveDashboard {
     public void endPath(){
         this.followingPath.setBoolean(false);
     }
-
 }

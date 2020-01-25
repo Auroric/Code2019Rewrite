@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.RobotContainer;
@@ -21,7 +20,7 @@ public class TrajectoryTracker extends RamseteCommand {
         super(trajectory, 
               () -> Drivetrain.odometry.getPoseMeters(), 
               follower, 
-              kinematics, 
+              kinematics,
               (left, right) -> Drivetrain.setClosedLoop(left, right));
         this.trajectory = trajectory;
     }
@@ -64,5 +63,4 @@ public class TrajectoryTracker extends RamseteCommand {
         Drivetrain.setOpenLoop(0.0, 0.0, false);
         RobotContainer.falcondash.endPath();
     }
-    
 }

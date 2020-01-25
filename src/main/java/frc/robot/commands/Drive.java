@@ -2,9 +2,7 @@ package frc.robot.commands;
 
 import java.util.Set;
 
-import edu.wpi.first.wpilibj.geometry.Twist2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,12 +12,9 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.DriverConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Drivetrain.DifferentialDrive;
 import frc.robot.subsystems.Drivetrain.WheelState;
 
 public class Drive implements Command {
-
-    private double left, right;
     private State state;
 
     public Drive(State state) {
@@ -32,12 +27,12 @@ public class Drive implements Command {
     // joystick values are used to calculate motor speeds
     public void execute() {
 
-        // Retrieving the deadbanded throttle and turn values (the controller joystick
-        // values)
+        // Retrieving the deadbanded throttle and turn values (the controller joystick values)
         double throttle = RobotContainer.getThrottleValue();
         double turn = RobotContainer.getTurnValue();
 
         WheelState wheelSpeeds;
+        double left, right;
 
         switch (state) {
             case OpenLoop:
@@ -102,7 +97,7 @@ public class Drive implements Command {
         Drivetrain.setOpenLoop(0.0, 0.0, false);
     }
 
-    public static enum State {
+    public enum State {
         OpenLoop, CheesyDriveOpenLoop, CheesyDriveClosedLoop
     }
 
@@ -110,5 +105,4 @@ public class Drive implements Command {
     public Set<Subsystem> getRequirements() {
         return Set.of(requirements);
     }
-
 }

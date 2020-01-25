@@ -13,7 +13,7 @@ public class Constants {
         public static final double kTurnInPlaceSens = 1; // Maximum turn-in-place rate (in percent of max) to allow robot to turn to [0,1]
 
         public static final double kMaxTurnRateRadians = Math.PI/3.0; // Maximum radians per second to allow turning
-    
+
     }
 
     /* Vision PD Controller Gains */
@@ -27,12 +27,10 @@ public class Constants {
 
         public static final int acceptablePixelError = 0; // Acceptable error for x and y-axes (in camera pixels)
         public static final double acceptableDistAdjustError = 0.05; // Minimum speed value to curvature drive instead of turn in place to align [0,1]
-
     }
 
     /* Cheesydrive Settings */
-    public class DrivetrainConstants {
-
+    public static class DrivetrainConstants {
         /* Auto Constants */
         public static final double kS = 1.39; // Minimum voltage required to overcome static friction (V)
         public static final double kV = 1.95; // Speed per volt (volt seconds per meter)
@@ -56,11 +54,9 @@ public class Constants {
         public static final int rightMotorA = 3; // TalonSRX
         public static final int rightMotorB = 4; // TalonSRX
         public static final int rightMotorC = 2; // VictorSPX
-
-
     }
 
-    public class ShooterConstants {
+    public static class ShooterConstants {
         public static final int upperMotor = 8;
         public static final int lowerMotor = 5;
 
@@ -70,7 +66,7 @@ public class Constants {
         public static final double kA = 0; // Acceleration per volt (volt seconds squared per rotation)
     }
 
-    public class HatchConstants {
+    public static class HatchConstants {
         public static final int kEjectForward = 3; // Number between 0 and 7
         public static final int kEjectReverse = 1; // Number between 0 and 7
 
@@ -80,9 +76,7 @@ public class Constants {
 
     /* Misc Settings */
     public static class ComponentConstants {
-
         public static final int kPCM_ID = 1;
         public static final int kCompressor_ID = 0;
-
     }
 }

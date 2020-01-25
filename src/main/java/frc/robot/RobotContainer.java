@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriverConstants;
 import frc.robot.Constants.ComponentConstants;
-import frc.robot.autonomous.AutonomousContainer;
 import frc.robot.autonomous.LiveDashboard;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Drive.State;
@@ -173,12 +171,12 @@ public class RobotContainer {
         return -limelight.getEntry("ty").getDouble(0.0);
     }
 
-    public static enum LEDMode {
+    public enum LEDMode {
         PIPELINE(0), OFF(1), BLINK(2), ON(3);
 
         public int val;
 
-        private LEDMode(int val) {
+        LEDMode(int val) {
             this.val = val;
         }
     }
@@ -188,7 +186,7 @@ public class RobotContainer {
 
         public int val;
         
-        private StreamMode(int val){
+        StreamMode(int val){
             this.val = val;
         }
     }
@@ -198,7 +196,7 @@ public class RobotContainer {
 
         public int val;
 
-        private VisionPipeline(int val){
+        VisionPipeline(int val){
             this.val = val;
         }
     }
