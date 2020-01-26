@@ -55,6 +55,6 @@ public class AutonomousContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new TrajectoryTracker(exampleTrajectory, true).andThen( ()-> Drivetrain.setOpenLoop(0.0, 0.0, false), RobotContainer.drivetrain);
+        return new TrajectoryTracker(exampleTrajectory, true).andThen(Drivetrain::stopMotors, RobotContainer.drivetrain);
     }
 }

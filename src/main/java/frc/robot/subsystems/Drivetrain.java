@@ -174,6 +174,13 @@ public class Drivetrain implements Subsystem {
         leftMotorA.set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, feedforwardLeft);
         rightMotorA.set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, feedforwardRight);
     }
+    
+    /**
+     * Stops the drivetrain motors by setting their speed to 0
+     */
+    public static void stopMotors(){
+        setOpenLoop(0.0, 0.0, false);
+    }
 
     // Zeroes encoders 
     public void resetEncoders() {

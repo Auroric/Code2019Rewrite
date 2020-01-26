@@ -31,7 +31,7 @@ public class TrajectoryTracker extends RamseteCommand {
               follower,
               Drivetrain.feedforward,
               kinematics,
-              () -> Drivetrain.getWheelSpeeds(),
+              Drivetrain::getWheelSpeeds,
               Drivetrain.leftPIDController,
               Drivetrain.rightPIDController,
               (left, right) -> Drivetrain.setOpenLoop(left, right, true),
@@ -60,7 +60,7 @@ public class TrajectoryTracker extends RamseteCommand {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        Drivetrain.setOpenLoop(0.0, 0.0, false);
+        Drivetrain.stopMotors();
         RobotContainer.falcondash.endPath();
     }
 }

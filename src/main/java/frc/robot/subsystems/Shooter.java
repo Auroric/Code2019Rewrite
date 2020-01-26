@@ -81,6 +81,13 @@ public class Shooter implements Subsystem {
         motorHigh.set(ControlMode.Velocity, top, DemandType.ArbitraryFeedForward, feedforwardTop);
         motorLow.set(ControlMode.Velocity, bottom, DemandType.ArbitraryFeedForward, feedforwardBottom);
     }
+    
+    /**
+     * Stops the shooter's motors by setting their speed to 0
+     */
+    public static void stopMotors(){
+        setOpenLoop(0.0, 0.0);
+    }
 
     // Clearing previous velocity values, transition from autonomous to teleop
     public static void clearLastVelocities(){

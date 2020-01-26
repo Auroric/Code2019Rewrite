@@ -94,7 +94,7 @@ public class Drive implements Command {
     // When this command ends, it stops the drivetrain to guarantee safety
     @Override
     public void end(boolean interrupted) {
-        Drivetrain.setOpenLoop(0.0, 0.0, false);
+        Drivetrain.stopMotors();
     }
 
     public enum State {

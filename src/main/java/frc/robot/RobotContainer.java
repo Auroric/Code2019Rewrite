@@ -69,9 +69,9 @@ public class RobotContainer {
     private void bindOI() {
 
         if(shooter != null) {
-            trigger.whileHeld( new RunCommand(()-> Shooter.setOpenLoop(-operator.getY(), operator.getY()))).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
-            operator_2.whenPressed( ()-> Shooter.setOpenLoop(0.65, -0.39)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
-            operator_3.whenPressed( ()-> Shooter.setOpenLoop(-0.4, 0.9)).whenReleased( ()-> Shooter.setOpenLoop(0.0, 0.0));
+            trigger.whileHeld(new RunCommand(()-> Shooter.setOpenLoop(-operator.getY(), operator.getY()))).whenReleased(Shooter::stopMotors);
+            operator_2.whenPressed(()-> Shooter.setOpenLoop(0.65, -0.39)).whenReleased(Shooter::stopMotors);
+            operator_3.whenPressed(()-> Shooter.setOpenLoop(-0.4, 0.9)).whenReleased(Shooter::stopMotors);
         }
 
         if(hatcheffector != null) {
@@ -79,18 +79,18 @@ public class RobotContainer {
             driver_B.whenPressed(new SequentialCommandGroup(
                 new ConditionalCommand(
                     new SequentialCommandGroup(
-                        new InstantCommand(()->hatcheffector.release()),
+                        new InstantCommand(hatcheffector::release),
                         new WaitCommand(0.125)
                     ),
                     new InstantCommand(),
                     ()->HatchEffector.retainer.get() == Value.kReverse
                 ),
-                new InstantCommand(()->hatcheffector.extend()),
+                new InstantCommand(hatcheffector::extend),
                 new WaitCommand(0.125),
-                new InstantCommand(()->hatcheffector.retract())
+                new InstantCommand(hatcheffector::retract)
             ));
 
-            driver_Y.whenPressed(()-> hatcheffector.alternate_retainer());
+            driver_Y.whenPressed(hatcheffector::alternate_retainer);
             driver_A.whenPressed(()-> {
                 navX.reset();
                 Drivetrain.odometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(navX.getAngle()));
