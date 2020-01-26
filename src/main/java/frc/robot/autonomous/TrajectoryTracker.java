@@ -21,7 +21,9 @@ public class TrajectoryTracker extends RamseteCommand {
               () -> Drivetrain.odometry.getPoseMeters(), 
               follower, 
               kinematics,
-              (left, right) -> Drivetrain.setClosedLoop(left, right));
+              Drivetrain::setClosedLoop
+        );
+
         this.trajectory = trajectory;
     }
 
