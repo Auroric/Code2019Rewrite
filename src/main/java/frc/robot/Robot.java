@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    robot = new RobotContainer();
+    robot = new RobotContainer()
     RobotContainer.drivetrain.resetEncoders();
     RobotContainer.navX.reset();
     RobotContainer.compressor.setClosedLoopControl(true);
